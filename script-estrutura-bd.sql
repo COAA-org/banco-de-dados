@@ -1,49 +1,72 @@
 CREATE DATABASE bdCOOA;
 USE bdCOOA;
 
-CREATE TABLE tbLogin(
-	idLogin INT PRIMARY KEY AUTO_INCREMENT
-    , email VARCHAR(45)
-    , senha VARCHAR(45)
-);
-
 CREATE TABLE tbEndereco(
-	idEndereco INT PRIMARY KEY AUTO_INCREMENT
-    , logradouro VARCHAR(45)
-	, numero VARCHAR(15)
-	, bairro VARCHAR(45)
-    , municipio VARCHAR(45)
-    , estado CHAR(2)
+    idEndereco INT PRIMARY KEY AUTO_INCREMENT
+    , logradouro VARCHAR(60)
+    , bairro VARCHAR(60)
+    , municipio VARCHAR(60)
+    , estado VARCHAR(60)
     , cep CHAR(8)
 );
 
-CREATE TABLE tbPredio(
-	idPredio INT PRIMARY KEY AUTO_INCREMENT
-	, nomePredio VARCHAR(45)
-    , construtora VARCHAR(45)
-    , fkEndereco INT
+CREATE TABLE tbEmpresa(
+    idEmpresa INT PRIMARY KEY AUTO_INCREMENT
+    , cpnj CHAR(14)
+    , razaoEmpresa VARCHAR(60)
+    , nomeEmpresa VARCHAR(60)
+    , telefone CHAR(15)
+    , email VARCHAR(60)
+    , numero VARCHAR(15)
+    , senha VARCHAR(60)
+    , fkEndereco INT 
     , FOREIGN KEY (fkEndereco) REFERENCES tbEndereco(idEndereco)
-    , fkLogin INT
-    , FOREIGN KEY (fkLogin) REFERENCES tbLogin(idLogin)
+);
+
+CREATE TABLE tbFabrica(
+    idFabrica INT PRIMARY KEY AUTO_INCREMENT
+    , nomeFabrica VARCHAR(60)
+    , telefone CHAR(15)
+    , fkEmpresa INT 
+    , FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
+    , fkEndereco INT 
+    , FOREIGN KEY (fkEndereco) REFERENCES tbEndereco(idEndereco)
+);
+
+
+CREATE TABLE tbFuncionario(
+    idFuncionario INT PRIMARY KEY AUTO_INCREMENT
+    , nomeFuncionario VARCHAR(60)
+    , sexo CHAR(1) CHECK(sexo in ('m','f','n'))
+    , cargoFuncionario VARCHAR(45)
+    , fkFuncionarioSuper INT 
+    , FOREIGN KEY (fkFuncionarioSuper) REFERENCES tbFuncionario(idFuncionario)
+);
+
+CREATE TABLE tbLocal(
+    idLocal INT PRIMARY KEY AUTO_INCREMENT
+    , nomeLocal VARCHAR(60)
+    , piso INT
+    , setor VARCHAR(60)
+    , fkFabrica INT 
+    , FOREIGN KEY (fkFabrica) REFERENCES tbFabrica(idFabrica)
 );
 
 CREATE TABLE tbSensor(
-	idSensor INT PRIMARY KEY AUTO_INCREMENT
-    , porta VARCHAR(5)
-    , andarPredio VARCHAR(45)
-    , identificacao VARCHAR(45)
-	, horarioData DATETIME
-    , fkPredio INT
-    , FOREIGN KEY (fkPredio) REFERENCES tbPredio(idPredio)
+    idSensor INT PRIMARY KEY AUTO_INCREMENT
+    , modeloSensor VARCHAR(60)
+    , dataInstalacao DATE
+    , fkFabrica INT 
+    , FOREIGN KEY (fkFabrica) REFERENCES tbFabrica(idFabrica)
+    , fkLocal INT 
+    , FOREIGN KEY (fkLocal) REFERENCES tbLocal(idLocal)
 );
 
-CREATE TABLE tbEmpresa(
-	idEmpresa INT PRIMARY KEY AUTO_INCREMENT
-    , nomeEmpresa VARCHAR(45)
-    , gestor VARCHAR(45)
-    , telefone CHAR(11) -- ddd + 9 digitos
-    , whatsapp CHAR(15) -- +55 ddd + 9 digitos
-    , cnpj CHAR(18) --  padrão: XX.XXX.XXX/0001-XX
-	, fkPredio INT
-    , FOREIGN KEY (fkPredio) REFERENCES tbPredio(idPredio)
+CREATE TABLE tbRegistro(
+    idRegistro INT PRIMARY KEY AUTO_INCREMENT
+    , saidaDado INT
+    , dataHora DATETIME
+    , fkSensor INT 
+    , FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor) 
 );
+
