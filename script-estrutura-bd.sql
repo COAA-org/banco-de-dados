@@ -33,14 +33,17 @@ CREATE TABLE tbFabrica(
     , FOREIGN KEY (fkEndereco) REFERENCES tbEndereco(idEndereco)
 );
 
-
 CREATE TABLE tbFuncionario(
-    idFuncionario INT PRIMARY KEY AUTO_INCREMENT
+    fkFabrica INT
+    , idFuncionario INT
     , nomeFuncionario VARCHAR(60)
     , sexo CHAR(1) CHECK(sexo in ('m','f','n'))
     , cargoFuncionario VARCHAR(45)
     , fkFuncionarioSuper INT 
+    , PRIMARY KEY (fkFabrica, idFuncionario)
+    , FOREIGN KEY (fkFabrica) REFERENCES tbFabrica(idFabrica)
     , FOREIGN KEY (fkFuncionarioSuper) REFERENCES tbFuncionario(idFuncionario)
+    , INDEX (idFuncionario)
 );
 
 CREATE TABLE tbLocal(
@@ -69,4 +72,3 @@ CREATE TABLE tbRegistro(
     , fkSensor INT 
     , FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor) 
 );
-
