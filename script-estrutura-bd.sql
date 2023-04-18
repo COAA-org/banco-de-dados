@@ -34,16 +34,14 @@ CREATE TABLE tbFabrica(
 );
 
 CREATE TABLE tbFuncionario(
-    fkFabrica INT
-    , idFuncionario INT
+    idFuncionario INT PRIMARY KEY AUTO_INCREMENT
     , nomeFuncionario VARCHAR(60)
     , sexo CHAR(1) CHECK(sexo in ('m','f','n'))
     , cargoFuncionario VARCHAR(45)
     , fkFuncionarioSuper INT 
-    , PRIMARY KEY (fkFabrica, idFuncionario)
-    , FOREIGN KEY (fkFabrica) REFERENCES tbFabrica(idFabrica)
     , FOREIGN KEY (fkFuncionarioSuper) REFERENCES tbFuncionario(idFuncionario)
-    , INDEX (idFuncionario)
+    , fkFabrica INT
+    , FOREIGN KEY (fkFabrica) REFERENCES tbFabrica(idFabrica)
 );
 
 CREATE TABLE tbLocal(
