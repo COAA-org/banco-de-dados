@@ -12,7 +12,7 @@ CREATE TABLE tbEndereco(
 
 CREATE TABLE tbEmpresa(
     idEmpresa INT PRIMARY KEY AUTO_INCREMENT
-    , cpnj CHAR(14)
+    , cnpj CHAR(14)
     , razaoEmpresa VARCHAR(60)
     , nomeEmpresa VARCHAR(60)
     , telefone CHAR(15)
